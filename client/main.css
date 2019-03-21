@@ -2,3 +2,7 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+
+#addImgPreview{
+	width: 250px;
+}
