@@ -27,7 +27,7 @@ Template.addImg.events({
 			$("#Imgdescription").val('');
 			$("addImgPreview").attr('src','raceCar.jpg');
 			$("#addImgModal").modal("hide");
-			imagesDB.insert({"Imgpath": Imgpath, "Imgtitle": Imgtitle, 'Imgdescription': Imgdescription, "created":Date() }) 
+			imagesDB.insert({"Imgpath": Imgpath, "Imgtitle": Imgtitle, 'Imgdescription': Imgdescription, "createdOn":new Date().getTime() }); 
 
 		},
 
@@ -52,8 +52,35 @@ Template.mainBody.helpers({
 	imagesFound(){
 		return imagesDB.find().count();
 	},
+	imageAge(){
+		var imgCreatedOn = imagesDB.findOne({_id:this._id}).createdOn;
+		imgCreatedOn = Math.round((new Date() - imgCreatedOn)/60000);
+		var timeUnit = " mins";
+		if (imgCreatedOn > 60){
+			imgCreatedOn=Math.round(imgCreatedOn/60);
+			timeUnit = " hours";
+		}else if(imgCreatedOn > 1440){
+			imgCreatedOn=Math.round(imgCreatedOn/1440);
+			timeUnit = " days";
+		}
+		return imgCreatedOn + timeUnit;
+	},
 	allImages(){
-		return imagesDB.find();
+		var prevTime = new Date() - 15000;
+		var newResults = imagesDB.find({createdOn: {$gte:prevTime}}).count();
+		
+		if (newResults > 0){
+			//if new images are found then sort by date first then ratings
+			return imagesDB.find({}, {sort: {createdOn: -1, imgRate: -1}});
+		}else{
+			//else sort ratings by date
+			return imagesDB.find({}, {sort: {imgRate: -1, createdOn: -1}});
+		}
+
+
+		console.log(newResults, "new images", prevTime)
+		return imagesDB.find({}, {sort: {imgRate: -1, createdOn: -1}});
+
 	},
 });
 
@@ -64,7 +91,7 @@ Template.mainBody.events({
 		var imgID = this._id
 		$("#"+imgID).fadeOut('slow',function(){
 			imagesDB.remove({_id:imgID});
-		//console.log ("delete",imgID)
+		console.log ("delete",imgID)
 		});
 	},	
 
@@ -78,11 +105,19 @@ Template.mainBody.events({
 		$("#eimgDesc").val(imagesDB.findOne({_id:imgId}).desc);
 		$('#eId').val(imagesDB.findOne({_id:imgId})._id);
 		$('#editImgModal').modal("show");
+	},
+
+	'click .js-rate'(event){
+		
+		var imgId = this.data_id;
+		var rating = $(event.currentTarget).data('userrating');
+		//console.log ("you clicked a star", imgId, "with a rating of", rating);
+		imagesDB.update({_id:imgId}, {$set:{"imgRate" : rating}}); 
 	}
 });
 
 
-Template.editImg.events({
+Template.editImage.events({
 	'click .js-updateImg'(){
 		var eId = $('#eId').val();
 		var Imgtitle = $("#eimgTitle").val();

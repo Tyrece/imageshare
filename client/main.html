@@ -69,12 +69,13 @@
           <div class="col-md-4" id= "{{_id}}">
             <div class="card mb-4 shadow-sm">
               <img src='{{Imgpath}}' alt="temp photo">
+              {{> starsRating class="js-rate" data_id=_id rating=imgRate size= 32 mutable=true}}
               <div class="card-body">
                 <p class="card-text"><h3>{{Imgtitle}}</h3>{{Imgdescription}}</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary js-edit">Edit</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary js-UpdateImg">Edit</button>
 
                     
                      
@@ -84,7 +85,7 @@
 
                   
                   
-                  <small class="text-muted">{{createdOn}} mins</small>
+                  <small class="text-muted"><!--{{createdOn}}-->{{imageAge}}</small>
                   <button type="button" data-toggle="popover" class="btn btn-sm btn-outline-secondary js-deleteImg" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="zmdi zmdi-delete"></i></button>
                    
                 </div>
@@ -128,8 +129,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <img id="addImgPreview" src="20170210-a-8302.jpg" alt="">
-        <img class="mb-3" id="addImgPreview" src="20170210-a-8302.jpg" alt="">
+        <img id="addImgPreview" src="raceCar.jpg" alt="">
+        <img class="mb-3" id="addImgPreview" src="" alt="">
        <div class="input-group mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text" id="basic-addon3">Image</span>
@@ -173,31 +174,31 @@
         </button>
       </div>
       <div class="modal-body">
-        <img id="addImgPreview" src="" alt="">
+        <img id="editImgPreview" src="" alt="">
         <img class="mb-3" id="addImgPreview" src="20170210-a-8302.jpg" alt="">
        <div class="input-group mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text" id="basic-addon3">Image</span>
   </div>
-  <input id="Imgpath" type="text" class="form-control" placeholder="Imgpath" aria-describedby="basic-addon3">
+  <input id="eImgpath" type="text" class="form-control" placeholder="Imgpath" aria-describedby="basic-addon3">
 </div>
 <div class="input-group mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text" id="basic-addon3">Title</span>
   </div>
-  <input id="Imgtitle" type="text" class="form-control" placeholder="Imgtitle" aria-describedby="basic-addon3">
+  <input id="eImgtitle" type="text" class="form-control" placeholder="Imgtitle" aria-describedby="basic-addon3">
 </div>
 <div class="input-group">
   <div class="input-group-prepend">
     <span class="input-group-text">Image Description</span>
   </div>
-  <textarea id="Imgdescription" class="form-control" placeholder="Imgdescription" aria-label="With textarea"></textarea>
+  <textarea id="eImgdescription" class="form-control" placeholder="Imgdescription" aria-label="With textarea"></textarea>
 </div>
       </div>
       
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary js-cancelAdd" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary js-saveImg">Save changes</button>
+        <button type="button" class="btn btn-primary js-UpdateImg">Save changes</button>
       </div>
     </div>
   </div>
