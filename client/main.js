@@ -1,9 +1,30 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Session } from 'meteor/session'
 
 import './main.html';
 
 import '../lib/Collections.js';
+
+
+Session.set('imgLimit', 3);
+
+
+lastScrollTop = 0;
+$(window).scroll(function(event){
+	//test if we are near the bottom of the window
+	if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+	//where are we in the page?
+	var scrollTop = $(this).scrollTop();
+	//test if we are going down
+	if (scrollTop > lastScrollTop){
+		// yes we are heading down...
+		Session.set('imgLimit', Session.get('imgLimit') + 3 );
+		
+	}
+	lastScrollTop = scrollTop;
+}
+});
 
 Template.myJumbo.events({
 
@@ -71,15 +92,15 @@ Template.mainBody.helpers({
 		
 		if (newResults > 0){
 			//if new images are found then sort by date first then ratings
-			return imagesDB.find({}, {sort: {createdOn: -1, imgRate: -1}});
+			return imagesDB.find({}, {sort: {createdOn: -1, imgRate: -1}, limit:Session.get('imgLimit')});
 		}else{
 			//else sort ratings by date
-			return imagesDB.find({}, {sort: {imgRate: -1, createdOn: -1}});
+			return imagesDB.find({}, {sort: {imgRate: -1, createdOn: -1}, limit:Session.get('imgLimit')});
 		}
 
 
-		console.log(newResults, "new images", prevTime)
-		return imagesDB.find({}, {sort: {imgRate: -1, createdOn: -1}});
+		// console.log(newResults, "new images", prevTime)
+		// return imagesDB.find({}, {sort: {imgRate: -1, createdOn:1}, limit:2});
 
 	},
 });
