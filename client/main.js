@@ -1,10 +1,15 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Session } from 'meteor/session'
+import { Accounts } from 'meteor/accounts-base';
 
 import './main.html';
 
 import '../lib/Collections.js';
+
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_ONLY',
+});
 
 
 Session.set('imgLimit', 3);
@@ -103,6 +108,13 @@ Template.mainBody.helpers({
 		// return imagesDB.find({}, {sort: {imgRate: -1, createdOn:1}, limit:2});
 
 	},
+	userLoggedIn(){
+		if (Meteor.User()){
+			return true;
+		}else{
+			return false;
+		}
+	}
 });
 
 
