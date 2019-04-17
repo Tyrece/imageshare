@@ -8,7 +8,7 @@
     {{> navBar}}
     {{> mainBody}}
     {{> footerBar}}
-    {{> editImage}}
+   
   </div>
 </body>
 
@@ -55,7 +55,9 @@
       <p class="lead text-muted">Glad you found your way here. It's always a good time to read a book. Find your passion amongst the stars by choosing from our many categories tailored just for you.</p>
       <p>
         <!--<a href="#" class="btn btn-primary my-2">Top Rated Book</a>-->
+        {{#if currentUser}}
         <a class="js-addImg btn btn-primary my-2">Add New Image</a>
+        {{/if}}
       </p>
     </div>
   </section>
@@ -70,18 +72,25 @@
           {{#each allImages}}
           <div class="col-md-4" id= "{{_id}}">
             <div class="card mb-4 shadow-sm">
+              <div class="row">
+                <div class="col-8 offset-1">
+                <a href="" id="{{userId}}" class="js-showUser"><p class="addby">@{{username}}</p></a>
+                </div>
+              </div>
+              
               <img class="images" src='{{Imgpath}}' alt="temp photo">
               {{> starsRating class="js-rate" data_id=_id rating=imgRate size= 32 mutable=true}}
               <div class="card-body">
                 <p class="card-text"><h3>{{Imgtitle}}</h3>{{Imgdescription}}</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    {{#if userloggedIn}}
+                    
                     <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    {{/if}}
+                    
 
-                    {{#if userloggedIn}}
-                    <button type="button" class="btn btn-sm btn-outline-secondary js-UpdateImg">Edit</button>
+                    {{#if currentUser}}
+                    <button type="button" class="btn btn-sm btn-outline-secondary js-editImage">Edit</button>
+                   
                     {{/if}}
                      </div>
                    
@@ -90,9 +99,12 @@
                   
                   
                   <small class="text-muted"><!--{{createdOn}}-->{{imageAge}}</small>
+                  {{#if currentUser}}
                   <button type="button" data-toggle="popover" class="btn btn-sm btn-outline-secondary js-deleteImg" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="zmdi zmdi-delete"></i></button>
+                  {{/if}}
                    
                 </div>
+              
               </div>
             </div>
           </div> <!-- /col -->
@@ -168,43 +180,43 @@
 
 
 <template name="editImage">
+  <!-- Modal -->
   <div class="modal fade" id="editImgModal" tabindex="-1" role="dialog" aria-labelledby="editImgModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addImgModalLabel">Edit</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <img id="editImgPreview" src="" alt="">
-        <img class="mb-3" id="addImgPreview" src="20170210-a-8302.jpg" alt="">
-       <div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="basic-addon3">Image</span>
-  </div>
-  <input id="eImgpath" type="text" class="form-control" placeholder="Imgpath" aria-describedby="basic-addon3">
-</div>
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="basic-addon3">Title</span>
-  </div>
-  <input id="eImgtitle" type="text" class="form-control" placeholder="Imgtitle" aria-describedby="basic-addon3">
-</div>
-<div class="input-group">
-  <div class="input-group-prepend">
-    <span class="input-group-text">Image Description</span>
-  </div>
-  <textarea id="eImgdescription" class="form-control" placeholder="Imgdescription" aria-label="With textarea"></textarea>
-</div>
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary js-cancelAdd" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary js-UpdateImg">Save changes</button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editImgModalLabel">Edit Image</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input id="eId" type="hidden">
+          <img class="mb-3" id="ImgPreview" src="user-512.png" alt="">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Image</span>
+            </div>
+            <input id="eimgPath" type="text" class="form-control" placeholder="Image path" aria-label="title">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Title</span>
+            </div>
+            <input id="eimgTitle" type="text" class="form-control" placeholder="Title of image" aria-label="title">
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Image Description</span>
+            </div>
+            <textarea id="eimgDesc" class="form-control" aria-label="Description"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary js-cancelAdd">Cancel</button>
+          <button type="button" class="btn btn-primary js-updateImg">Update</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>

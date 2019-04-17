@@ -13,6 +13,7 @@ Accounts.ui.config({
 
 
 Session.set('imgLimit', 3);
+Session.set('userFilter', false);
 
 
 lastScrollTop = 0;
@@ -53,7 +54,7 @@ Template.addImg.events({
 			$("#Imgdescription").val('');
 			$("addImgPreview").attr('src','raceCar.jpg');
 			$("#addImgModal").modal("hide");
-			imagesDB.insert({"Imgpath": Imgpath, "Imgtitle": Imgtitle, 'Imgdescription': Imgdescription, "createdOn":new Date().getTime() }); 
+			imagesDB.insert({"Imgpath": Imgpath, "Imgtitle": Imgtitle, 'Imgdescription': Imgdescription, "createdOn":new Date().getTime(), "postedBy":Meteor.user()._id }); 
 
 		},
 
@@ -92,6 +93,8 @@ Template.mainBody.helpers({
 		return imgCreatedOn + timeUnit;
 	},
 	allImages(){
+		if(Session.get("userFilter") == false){
+
 		var prevTime = new Date() - 15000;
 		var newResults = imagesDB.find({createdOn: {$gte:prevTime}}).count();
 		
@@ -102,19 +105,26 @@ Template.mainBody.helpers({
 			//else sort ratings by date
 			return imagesDB.find({}, {sort: {imgRate: -1, createdOn: -1}, limit:Session.get('imgLimit')});
 		}
-
+	}else{
+		return imagesDB.find({postedBy:Session.get("userFilter")}, {sort: {imgRate: -1, createdOn: -1}, limit:Session.get('imgLimit')});;
+	}
 
 		// console.log(newResults, "new images", prevTime)
 		// return imagesDB.find({}, {sort: {imgRate: -1, createdOn:1}, limit:2});
 
 	},
-	userLoggedIn(){
-		if (Meteor.User()){
-			return true;
-		}else{
-			return false;
-		}
-	}
+
+	username(){
+		var uId = imagesDB.findOne({_id:this._id}).postedBy;
+		return Meteor.users.findOne({_id:uId}).username;
+	},
+
+
+
+
+	userId(){
+		return uId = imagesDB.findOne({_id:this._id}).postedBy;
+	},
 });
 
 
@@ -131,6 +141,7 @@ Template.mainBody.events({
 
 
 	'click .js-editImage'(){
+		console.log("working")
 		var imgId = this._id;
 		$('#ImgPreview').attr('src',imagesDB.findOne({_id:imgId}).path);
 		$("#eimgTitle").val(imagesDB.findOne({_id:imgId}).title);
@@ -146,12 +157,17 @@ Template.mainBody.events({
 		var rating = $(event.currentTarget).data('userrating');
 		//console.log ("you clicked a star", imgId, "with a rating of", rating);
 		imagesDB.update({_id:imgId}, {$set:{"imgRate" : rating}}); 
+	},
+	'click .js-showUser'(event){
+		event.preventDefault();
+		Session.set("userFilter", event.currentTarget.id);
 	}
 });
 
 
 Template.editImage.events({
 	'click .js-updateImg'(){
+		console.log("working")
 		var eId = $('#eId').val();
 		var Imgtitle = $("#eimgTitle").val();
 		var Imgpath = $("#eimgPath").val();
