@@ -167,7 +167,7 @@ Template.mainBody.events({
 
 Template.editImage.events({
 	'click .js-updateImg'(){
-		console.log("working")
+		console.log("hello")
 		var eId = $('#eId').val();
 		var Imgtitle = $("#eimgTitle").val();
 		var Imgpath = $("#eimgPath").val();

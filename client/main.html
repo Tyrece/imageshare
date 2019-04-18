@@ -5,6 +5,7 @@
 <body>
   <div class="container">
     {{> addImg}}
+    {{> editImg}}
     {{> navBar}}
     {{> mainBody}}
     {{> footerBar}}
@@ -179,7 +180,7 @@
 
 
 
-<template name="editImage">
+<template name="editImg">
   <!-- Modal -->
   <div class="modal fade" id="editImgModal" tabindex="-1" role="dialog" aria-labelledby="editImgModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -213,10 +214,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary js-cancelAdd">Cancel</button>
+          <button type="button" class="btn btn-secondary " data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary js-updateImg">Update</button>
         </div>
       </div>
     </div>
   </div>
-</template>
+</template> 
