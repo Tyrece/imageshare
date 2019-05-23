@@ -165,14 +165,14 @@ Template.mainBody.events({
 });
 
 
-Template.editImage.events({
+Template.editImg.events({
 	'click .js-updateImg'(){
 		console.log("hello")
 		var eId = $('#eId').val();
 		var Imgtitle = $("#eimgTitle").val();
 		var Imgpath = $("#eimgPath").val();
-		var Imgdescription= $("#eimgDesc").val();
-		imagesDB.update({_id:eId}, {$set:{"title":imgTitle, "path":imgPath, "desc":imgDesc}});
+		var ImgDesc= $("#eimgDesc").val();
+		imagesDB.update({_id:eId}, {$set:{"title":imgtitle, "path":imgpath, "desc":imgDesc}});
 		$('#editImgModal').modal("hide");
 	}
 }); 
