@@ -52,7 +52,7 @@
   <section class="jumbotron text-center">
     <div class="container">
         
-      <h1 class="jumbotron-heading">literalMe</h1>
+      <h1 class="jumbotron-heading">ImageShare</h1>
       <p class="lead text-muted">Glad you found your way here. It's always a good time to read a book. Find your passion amongst the stars by choosing from our many categories tailored just for you.</p>
       <p>
         <!--<a href="#" class="btn btn-primary my-2">Top Rated Book</a>-->
@@ -69,6 +69,7 @@
     {{> myJumbo}}
     <div class="album py-5 bg-light">
       <div class="container">
+         
         <div class="row">
           {{#each allImages}}
           <div class="col-md-4" id= "{{_id}}">
@@ -79,7 +80,9 @@
                 </div>
               </div>
               
+              <div class="imgFrame">
               <img class="images" src='{{Imgpath}}' alt="temp photo">
+              </div>
               {{> starsRating class="js-rate" data_id=_id rating=imgRate size= 32 mutable=true}}
               <div class="card-body">
                 <p class="card-text"><h3>{{Imgtitle}}</h3>{{Imgdescription}}</p>

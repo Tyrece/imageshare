@@ -141,12 +141,11 @@ Template.mainBody.events({
 
 
 	'click .js-editImage'(){
-		console.log("working")
 		var imgId = this._id;
 		$('#ImgPreview').attr('src',imagesDB.findOne({_id:imgId}).path);
-		$("#eimgTitle").val(imagesDB.findOne({_id:imgId}).title);
+		$("#eimgtitle").val(imagesDB.findOne({_id:imgId}).title);
 		$("#eimgPath").val(imagesDB.findOne({_id:imgId}).path);
-		$("#eimgDesc").val(imagesDB.findOne({_id:imgId}).desc);
+		$("#eimgdescription").val(imagesDB.findOne({_id:imgId}).desc);
 		$('#eId').val(imagesDB.findOne({_id:imgId})._id);
 		$('#editImgModal').modal("show");
 	},
@@ -167,14 +166,22 @@ Template.mainBody.events({
 
 Template.editImg.events({
 	'click .js-updateImg'(){
-		console.log("hello")
+
 		var eId = $('#eId').val();
 		var Imgtitle = $("#eimgTitle").val();
-		var Imgpath = $("#eimgPath").val();
-		var ImgDesc= $("#eimgDesc").val();
-		imagesDB.update({_id:eId}, {$set:{"title":imgtitle, "path":imgpath, "desc":imgDesc}});
+		var ImgPath = $("#eimgPath").val();
+		var Imgdescription = $("#eimgDesc").val();
+		console.log("save",ImgPath,Imgtitle,Imgdescription);
+
+		$("#eimgTitle").val('');
+		$("#eimgPath").val('');
+		$("#eimgDesc").val('');
+
+
+		imagesDB.update({_id:eId}, {$set:{"title":Imgtitle, "path":ImgPath, "desc":imgdescription}});
 		$('#editImgModal').modal("hide");
 	}
-}); 
+});
+
 
 

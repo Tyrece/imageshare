@@ -19,3 +19,6 @@ body {
 .allImages{
 	width: 100%;
 } 
+.card{
+	max-height: 600px;
+}
