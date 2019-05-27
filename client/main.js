@@ -4,7 +4,6 @@ import { Session } from 'meteor/session'
 import { Accounts } from 'meteor/accounts-base';
 
 import './main.html';
-
 import '../lib/Collections.js';
 
 Accounts.ui.config({
@@ -150,6 +149,16 @@ Template.mainBody.events({
 		$('#editImgModal').modal("show");
 	},
 
+	'click .js-viewImg'(){ 
+		var imgId = this._id;
+		$('#ImgPreview').attr('src',imagesDB.findOne({_id:imgId}).path);
+		
+		$("#eimgPath").val(imagesDB.findOne({_id:imgId}).path);
+		
+		
+		$('#viewImgModal').modal("show");
+	},
+
 	'click .js-rate'(event){
 		
 		var imgId = this.data_id;
@@ -166,22 +175,39 @@ Template.mainBody.events({
 
 Template.editImg.events({
 	'click .js-updateImg'(){
-
 		var eId = $('#eId').val();
 		var Imgtitle = $("#eimgTitle").val();
-		var ImgPath = $("#eimgPath").val();
-		var Imgdescription = $("#eimgDesc").val();
-		console.log("save",ImgPath,Imgtitle,Imgdescription);
+		var Imgpath = $("#eimgPath").val();
+		var Imgdescription = $("#eimgDesc").val(); 
 
 		$("#eimgTitle").val('');
 		$("#eimgPath").val('');
 		$("#eimgDesc").val('');
 
 
-		imagesDB.update({_id:eId}, {$set:{"title":Imgtitle, "path":ImgPath, "desc":imgdescription}});
+		imagesDB.update({_id:eId}, {$set:{"Imgtitle":Imgtitle, "Imgpath":Imgpath, "Imgdescription":Imgdescription}});
 		$('#editImgModal').modal("hide");
 	}
 });
+
+
+Template.viewImg.helpers({
+
+	username(){
+		var uId = imagesDB.findOne({_id:this._id}).postedBy;
+		return Meteor.users.findOne({_id:uId}).username;
+	},
+
+
+
+
+	userId(){
+		return uId = imagesDB.findOne({_id:this._id}).postedBy;
+	},
+})
+
+
+
 
 
 
